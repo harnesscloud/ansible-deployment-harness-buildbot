@@ -43,7 +43,7 @@
 
     - name: update master.cfg for each master from template if necessary
       template:
-        src: var/lib/buildbot/masters/master.cfg
+        src: templates/var/lib/buildbot/masters/master.cfg
         dest: /var/lib/buildbot/masters/{{ item }}/master.cfg
         owner: buildbot
         group: buildbot
