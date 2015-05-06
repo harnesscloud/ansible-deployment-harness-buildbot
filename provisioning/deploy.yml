@@ -24,6 +24,39 @@
       with_items:
         - buildbot
 
+    - name: ensure that each buildmaster process has a subdirectory
+      file:
+        path: /var/lib/buildbot/masters/{{ item }}
+        owner: buildbot
+        group: buildbot
+        mode: 0700
+        state: directory
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+
+    - name: ensure that each buildmaster subdirectory has been initialized
+      sudo_user: buildbot
+      command: buildbot create-master masters/{{ item }}
+      args:
+        chdir: /var/lib/buildbot
+        creates: /var/lib/buildbot/masters/{{ item }}/buildbot.tac
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+
+    - name: ensure that buildmaster is enabled in /etc/default/buildmaster
+      lineinfile:
+        dest: /etc/default/buildmaster
+        regexp: ^#?MASTER_ENABLED\[{{ item }}\]=
+        line: MASTER_ENABLED[{{ item }}]=1
+        state: present
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+
+    - name: ensure that buildmaster basedirs are configured in /etc/default/buildmaster
+      lineinfile:
+        dest: /etc/default/buildmaster
+        regexp: ^#?MASTER_BASEDIR\[{{ item }}\]=
+        line: 'MASTER_BASEDIR[{{ item }}]="/var/lib/buildbot/masters/{{ item }}"'
+        state: present
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+
     - name: ensure that buildbot master services are started and enabled
       service:
         name: "{{ item }}"
@@ -45,6 +78,39 @@
         cache_valid_time: 600
       with_items:
         - buildbot-slave
+
+    - name: ensure that each buildslave process has a subdirectory
+      file:
+        path: /var/lib/buildbot/slaves/{{ item }}
+        owner: buildbot
+        group: buildbot
+        mode: 0700
+        state: directory
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
+
+    - name: ensure that each buildslave subdirectory has been initialized
+      sudo_user: buildbot
+      command: buildslave create-slave slaves/{{ item }} {{ buildbot_master_ip }}:9989 slave-{{ inventory_host }}-{{ item }} customperslavepassword
+      args:
+        chdir: /var/lib/buildbot
+        creates: /var/lib/buildbot/slaves/{{ item }}/buildbot.tac
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
+
+    - name: ensure that buildslave is enabled in /etc/default/buildslave
+      lineinfile:
+        dest: /etc/default/buildslave
+        regexp: ^#?SLAVE_ENABLED\[{{ item }}\]=
+        line: SLAVE_ENABLED[{{ item }}]=1
+        state: present
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
+
+    - name: ensure that buildslave basedirs are configured in /etc/default/buildslave
+      lineinfile:
+        dest: /etc/default/buildslave
+        regexp: ^#?SLAVE_BASEDIR\[{{ item }}\]=
+        line: 'SLAVE_BASEDIR[{{ item }}]="/var/lib/buildbot/slaves/{{ item }}"'
+        state: present
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
     - name: ensure that buildbot slave services are started and enabled
       service:

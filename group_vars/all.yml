@@ -2,3 +2,6 @@
 buildbot_repository_prefix: "https://github.com/marklee77/"
 
 buildbot_master_ip: "{{ hostvars[groups.master[0]].ansible_default_ipv4.address }}"
+
+buildbot_master_process_count: 1
+buildbot_slave_process_count: 1
