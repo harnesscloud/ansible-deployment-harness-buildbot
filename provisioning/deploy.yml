@@ -41,11 +41,27 @@
         creates: /var/lib/buildbot/masters/{{ item }}/buildbot.tac
       with_sequence: start=1 end={{ buildbot_master_process_count }}
 
-    - name: ensure that buildmaster is enabled in /etc/default/buildmaster
+    - name: ensure that buildmasters are enabled in /etc/default/buildmaster
       lineinfile:
         dest: /etc/default/buildmaster
         regexp: ^#?MASTER_ENABLED\[{{ item }}\]=
         line: MASTER_ENABLED[{{ item }}]=1
+        state: present
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+
+    - name: ensure that buildmaster names are configured in /etc/default/buildmaster
+      lineinfile:
+        dest: /etc/default/buildmaster
+        regexp: ^#?MASTER_NAME\[{{ item }}\]=
+        line: 'MASTER_NAME[{{ item }}]="buildmaster {{ inventory_hostname }} #{{ item }}"'
+        state: present
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+
+    - name: ensure that buildmaster users are configured in /etc/default/buildmaster
+      lineinfile:
+        dest: /etc/default/buildmaster
+        regexp: ^#?MASTER_USER\[{{ item }}\]=
+        line: 'MASTER_USER[{{ item }}]="buildbot"'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
 
@@ -54,6 +70,22 @@
         dest: /etc/default/buildmaster
         regexp: ^#?MASTER_BASEDIR\[{{ item }}\]=
         line: 'MASTER_BASEDIR[{{ item }}]="/var/lib/buildbot/masters/{{ item }}"'
+        state: present
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+
+    - name: ensure that buildmaster options are configured in /etc/default/buildmaster
+      lineinfile:
+        dest: /etc/default/buildmaster
+        regexp: ^#?MASTER_OPTIONS\[{{ item }}\]=
+        line: 'MASTER_OPTIONS[{{ item }}]=""'
+        state: present
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+
+    - name: ensure that buildmaster options are configured in /etc/default/buildmaster
+      lineinfile:
+        dest: /etc/default/buildmaster
+        regexp: ^#?MASTER_PREFIXCMD\[{{ item }}\]=
+        line: 'MASTER_PREFIXCMD[{{ item }}]=""'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
 
@@ -90,7 +122,7 @@
 
     - name: ensure that each buildslave subdirectory has been initialized
       sudo_user: buildbot
-      command: buildslave create-slave slaves/{{ item }} {{ buildbot_master_ip }}:9989 slave-{{ inventory_host }}-{{ item }} customperslavepassword
+      command: buildslave create-slave slaves/{{ item }} {{ buildbot_master_ip }}:9989 slave-{{ inventory_hostname }}-{{ item }} customperslavepassword
       args:
         chdir: /var/lib/buildbot
         creates: /var/lib/buildbot/slaves/{{ item }}/buildbot.tac
@@ -104,11 +136,43 @@
         state: present
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
+    - name: ensure that buildslave names are configured in /etc/default/buildslave
+      lineinfile:
+        dest: /etc/default/buildslave
+        regexp: ^#?SLAVE_NAME\[{{ item }}\]=
+        line: 'SLAVE_NAME[{{ item }}]="buildslave {{ inventory_hostname }} #{{ item }}"'
+        state: present
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
+
+    - name: ensure that buildslave users are configured in /etc/default/buildslave
+      lineinfile:
+        dest: /etc/default/buildslave
+        regexp: ^#?SLAVE_USER\[{{ item }}\]=
+        line: 'SLAVE_USER[{{ item }}]="buildbot"'
+        state: present
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
+
     - name: ensure that buildslave basedirs are configured in /etc/default/buildslave
       lineinfile:
         dest: /etc/default/buildslave
         regexp: ^#?SLAVE_BASEDIR\[{{ item }}\]=
         line: 'SLAVE_BASEDIR[{{ item }}]="/var/lib/buildbot/slaves/{{ item }}"'
+        state: present
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
+
+    - name: ensure that buildslave options are configured in /etc/default/buildslave
+      lineinfile:
+        dest: /etc/default/buildslave
+        regexp: ^#?slave_OPTIONS\[{{ item }}\]=
+        line: 'slave_OPTIONS[{{ item }}]=""'
+        state: present
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
+
+    - name: ensure that buildslave options are configured in /etc/default/buildslave
+      lineinfile:
+        dest: /etc/default/buildslave
+        regexp: ^#?slave_PREFIXCMD\[{{ item }}\]=
+        line: 'slave_PREFIXCMD[{{ item }}]=""'
         state: present
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
