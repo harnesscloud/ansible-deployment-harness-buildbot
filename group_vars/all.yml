@@ -1,4 +1,4 @@
 ---
-buildbot_repository_prefix: "https://github.com/openstack-ansible/"
+buildbot_repository_prefix: "https://github.com/marklee77/"
 
 buildbot_master_ip: "{{ hostvars[groups.master[0]].ansible_default_ipv4.address }}"

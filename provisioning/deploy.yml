@@ -4,8 +4,30 @@
   roles:
     - chrony
 
-
 - hosts: slaves
   sudo: True
   roles:
     - docker
+
+- hosts: all
+  sudo: True
+  tasks:
+
+    - name: ensure that pip is installed
+      apt:
+        pkg: "{{ item }}"
+        state: latest
+        update_cache: yes
+        cache_valid_time: 600
+      with_items:
+        - python-pip
+
+    - name: ensure that buildbot is installed
+      pip:
+        name: {{ item.name }}
+        state: latest
+      when: inventory_hostname in groups['{{ item.group }}']
+      with_items:
+        - { name: buildbot, group: master }
+        - { name: buildbot-slave, group: slaves }
+
