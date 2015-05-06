@@ -15,7 +15,7 @@
   sudo: True
   tasks:
 
-    - name: ensure that buildbot is installed
+    - name: ensure that buildbot master packages are installed
       apt:
         pkg: "{{ item }}"
         state: latest
@@ -24,12 +24,20 @@
       with_items:
         - buildbot
 
+    - name: ensure that buildbot master services are started and enabled
+      service:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items:
+        - buildmaster
+
 
 - hosts: slaves
   sudo: True
   tasks:
 
-    - name: ensure that buildbot is installed
+    - name: ensure that buildbot slave packages are installed
       apt:
         pkg: "{{ item }}"
         state: latest
@@ -37,6 +45,14 @@
         cache_valid_time: 600
       with_items:
         - buildbot-slave
+
+    - name: ensure that buildbot slave services are started and enabled
+      service:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items:
+        - buildslave
 
 
 #- hosts: all
