@@ -163,16 +163,16 @@
     - name: ensure that buildslave options are configured in /etc/default/buildslave
       lineinfile:
         dest: /etc/default/buildslave
-        regexp: ^#?slave_OPTIONS\[{{ item }}\]=
-        line: 'slave_OPTIONS[{{ item }}]=""'
+        regexp: ^#?SLAVE_OPTIONS\[{{ item }}\]=
+        line: 'SLAVE_OPTIONS[{{ item }}]=""'
         state: present
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
     - name: ensure that buildslave options are configured in /etc/default/buildslave
       lineinfile:
         dest: /etc/default/buildslave
-        regexp: ^#?slave_PREFIXCMD\[{{ item }}\]=
-        line: 'slave_PREFIXCMD[{{ item }}]=""'
+        regexp: ^#?SLAVE_PREFIXCMD\[{{ item }}\]=
+        line: 'SLAVE_PREFIXCMD[{{ item }}]=""'
         state: present
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
