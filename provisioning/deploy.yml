@@ -20,11 +20,12 @@
         update_cache: yes
         cache_valid_time: 600
       with_items:
+        - python-dev
         - python-pip
 
     - name: ensure that buildbot is installed
       pip:
-        name: {{ item.name }}
+        name: "{{ item.name }}"
         state: latest
       when: inventory_hostname in groups['{{ item.group }}']
       with_items:
