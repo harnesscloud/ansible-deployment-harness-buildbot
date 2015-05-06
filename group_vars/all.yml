@@ -1,4 +1,13 @@
 ---
+buildbot_run_dir: "{{ lookup('env', 'PWD') }}"
+#buildbot_slave_passwords:
+#  {% for slave_hostname in group.slaves %}
+#    {{ slave_hostname }}:
+#    {% for i in range(buildbot_master_process_count) %}
+#      - {{ lookup('password', openstack_run_dir + '/private/credentials/buildbot-slave-password-{{ slave_hostname }}-{{ i+1 }} length=20 chars=ascii_letters,digits') }}
+#    {% endfor %}
+#  {% endford %}
+
 buildbot_repository_prefix: "https://github.com/marklee77/"
 
 buildbot_master_ip: "{{ hostvars[groups.master[0]].ansible_default_ipv4.address }}"
