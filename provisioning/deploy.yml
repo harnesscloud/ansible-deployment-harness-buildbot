@@ -62,7 +62,7 @@
       lineinfile:
         dest: /etc/default/buildmaster
         regexp: ^#?MASTER_NAME\[{{ item }}\]=
-        line: 'MASTER_NAME[{{ item }}]="buildmaster {{ inventory_hostname }} #{{ item }}"'
+        line: 'MASTER_NAME[{{ item }}]="buildmaster {{ inventory_hostname_short }} #{{ item }}"'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
 
@@ -132,7 +132,7 @@
 
     - name: ensure that each buildslave subdirectory has been initialized
       sudo_user: buildbot
-      command: buildslave create-slave slaves/{{ item }} {{ buildbot_master_ip }}:9989 slave-{{ inventory_hostname }}-{{ item }} customperslavepassword
+      command: buildslave create-slave slaves/{{ item }} {{ buildbot_master_ip }}:9989 slave-{{ inventory_hostname_short }}-{{ item }} customperslavepassword
       args:
         chdir: /var/lib/buildbot
         creates: /var/lib/buildbot/slaves/{{ item }}/buildbot.tac
@@ -150,7 +150,7 @@
       lineinfile:
         dest: /etc/default/buildslave
         regexp: ^#?SLAVE_NAME\[{{ item }}\]=
-        line: 'SLAVE_NAME[{{ item }}]="buildslave {{ inventory_hostname }} #{{ item }}"'
+        line: 'SLAVE_NAME[{{ item }}]="buildslave {{ inventory_hostname_short }} #{{ item }}"'
         state: present
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
