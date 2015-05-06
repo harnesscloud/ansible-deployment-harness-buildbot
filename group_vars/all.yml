@@ -1,12 +1,4 @@
 ---
-openstack_repository_prefix: "https://github.com/openstack-ansible/"
+buildbot_repository_prefix: "https://github.com/openstack-ansible/"
 
-openstack_controller_ip: "{{ hostvars[groups.controller[0]].ansible_default_ipv4.address }}"
-
-openstack_rabbitmq_host: "{{ openstack_controller_ip }}"
-openstack_mysql_host: "{{ openstack_controller_ip }}"
-
-openstack_identity_endpoint_host: "{{ openstack_controller_ip }}"
-openstack_image_endpoint_host: "{{ openstack_controller_ip }}"
-openstack_compute_endpoint_host: "{{ openstack_controller_ip }}"
-openstack_network_endpoint_host: "{{ openstack_controller_ip }}"
+buildbot_master_ip: "{{ hostvars[groups.master[0]].ansible_default_ipv4.address }}"
