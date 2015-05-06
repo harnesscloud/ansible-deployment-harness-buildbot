@@ -1,13 +1,5 @@
 ---
 buildbot_run_dir: "{{ lookup('env', 'PWD') }}"
-buildbot_slave_passwords: >
-  {% for slave_inventory_name in group.slaves %}
-    {{ slave_inventory_name }}:
-    {% for i in range(buildbot_master_process_count) %}
-      - {{ lookup('password', buildbot_run_dir + '/private/credentials/buildbot-slave-password-{{ slave_inventory_name }}-{{ i+1 }} length=20 chars=ascii_letters,digits') }}
-    {% endfor %}
-  {% endfor %}
-
 
 buildbot_repository_prefix: "https://github.com/marklee77/"
 
