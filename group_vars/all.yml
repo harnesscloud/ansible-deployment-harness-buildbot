@@ -16,3 +16,4 @@ buildbot_projects:
 buildbot_title: HARNESS Project
 buildbot_titleURL: "http://www.harness-project.eu"
 buildbot_buildbotURL: "http://localhost:8101/"
+buildbot_notify_fromaddr: "buildbot-noreply@harness-project.eu"
