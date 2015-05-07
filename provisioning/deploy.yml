@@ -5,10 +5,10 @@
     - chrony
 
 
-#- hosts: slaves
-#  sudo: True
-#  roles:
-#    - docker
+- hosts: slaves
+  sudo: True
+  roles:
+    - docker
 
 
 - hosts: master
@@ -49,6 +49,8 @@
         group: buildbot
         mode: 0600
       with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot master services
 
     - name: ensure that buildmasters are enabled in /etc/default/buildmaster
       lineinfile:
@@ -57,6 +59,8 @@
         line: MASTER_ENABLED[{{ item }}]=1
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot master services
 
     - name: ensure that buildmaster names are configured in /etc/default/buildmaster
       lineinfile:
@@ -65,6 +69,8 @@
         line: 'MASTER_NAME[{{ item }}]="buildmaster {{ inventory_hostname_short }} #{{ item }}"'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot master services
 
     - name: ensure that buildmaster users are configured in /etc/default/buildmaster
       lineinfile:
@@ -73,6 +79,8 @@
         line: 'MASTER_USER[{{ item }}]="buildbot"'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot master services
 
     - name: ensure that buildmaster basedirs are configured in /etc/default/buildmaster
       lineinfile:
@@ -81,6 +89,8 @@
         line: 'MASTER_BASEDIR[{{ item }}]="/var/lib/buildbot/masters/{{ item }}"'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot master services
 
     - name: ensure that buildmaster options are configured in /etc/default/buildmaster
       lineinfile:
@@ -89,6 +99,8 @@
         line: 'MASTER_OPTIONS[{{ item }}]=""'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot master services
 
     - name: ensure that buildmaster options are configured in /etc/default/buildmaster
       lineinfile:
@@ -97,6 +109,8 @@
         line: 'MASTER_PREFIXCMD[{{ item }}]=""'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot master services
 
     - name: ensure that buildbot master services are started and enabled
       service:
@@ -107,6 +121,15 @@
       with_items:
         - buildmaster
 
+  handlers:
+
+    - name: restart buildbot master services
+      service:
+        name: "{{ item }}"
+        state: restarted
+      with_items:
+        - buildmaster
+ 
 
 - hosts: slaves
   sudo: True
