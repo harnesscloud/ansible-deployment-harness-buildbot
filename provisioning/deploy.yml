@@ -120,6 +120,7 @@
         cache_valid_time: 600
       with_items:
         - buildbot-slave
+        - git
 
     - name: ensure that each buildslave process has a subdirectory
       file:
