@@ -7,3 +7,12 @@ buildbot_master_ip: "{{ hostvars[groups.master[0]].ansible_default_ipv4.address 
 
 buildbot_master_process_count: 1
 buildbot_slave_process_count: 2
+
+buildbot_projects:
+  - { name: crs,
+      repo: "git://github.com/harnesscloud/crs.git",
+      branch: master }
+
+buildbot_title: HARNESS Project
+buildbot_titleURL: "http://www.harness-project.eu"
+buildbot_buildbotURL: "http://localhost:8101/"
