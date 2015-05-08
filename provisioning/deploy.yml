@@ -218,7 +218,7 @@
         owner: buildbot
         group: buildbot
         mode: 0644
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
       notify:
         - restart buildbot slave services
 
@@ -229,7 +229,7 @@
         owner: buildbot
         group: buildbot
         mode: 0644
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_sequence: start=1 end={{ buildbot_slave_process_count }}
       notify:
         - restart buildbot slave services
 
