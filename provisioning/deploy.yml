@@ -3,30 +3,62 @@
   sudo: True
   roles:
     - chrony
-
-
-- hosts: slaves
-  sudo: True
-  roles:
     - docker
 
 
-- hosts: master
+- hosts: all
   sudo: True
   tasks:
 
-    - name: ensure that buildbot master packages are installed
+    - name: ensure that buildbot dependency packages are installed
       apt:
         pkg: "{{ item }}"
         state: latest
         update_cache: yes
         cache_valid_time: 600
       with_items:
+        - git
+        - python-dev
+        - python-pip 
+
+    - name: ensure that buildbot is installed
+      pip:
+        name: "{{ item }}"
+        state: latest
+      with_items:
         - buildbot
+
+    - name: ensure that buildbot group exists
+      group:
+        name: buildbot
+        state: present
+
+    - name: ensure that buildbot user exits
+      user:
+        name: buildbot
+        group: buildbot
+        home: /srv/buildbot
+        createhome: yes
+        state: present
+
+
+- hosts: master
+  sudo: True
+  tasks:
+
+    - name: update /etc/init.d/buildmaster for each master from template if necessary
+      template:
+        src: templates/etc/init.d/buildmaster
+        dest: /etc/init.d/buildmaster
+        owner: buildbot
+        group: buildbot
+        mode: 0600
+      notify:
+        - restart buildbot master services
 
     - name: ensure that each buildmaster process has a subdirectory
       file:
-        path: /var/lib/buildbot/masters/{{ item }}
+        path: /srv/buildbot/masters/{{ item }}
         owner: buildbot
         group: buildbot
         mode: 0700
@@ -37,14 +69,14 @@
       sudo_user: buildbot
       command: buildbot create-master masters/{{ item }}
       args:
-        chdir: /var/lib/buildbot
-        creates: /var/lib/buildbot/masters/{{ item }}/buildbot.tac
+        chdir: /srv/buildbot
+        creates: /srv/buildbot/masters/{{ item }}/buildbot.tac
       with_sequence: start=1 end={{ buildbot_master_process_count }}
 
     - name: update master.cfg for each master from template if necessary
       template:
-        src: templates/var/lib/buildbot/masters/master.cfg
-        dest: /var/lib/buildbot/masters/{{ item }}/master.cfg
+        src: templates/srv/buildbot/masters/master.cfg
+        dest: /srv/buildbot/masters/{{ item }}/master.cfg
         owner: buildbot
         group: buildbot
         mode: 0600
@@ -86,7 +118,7 @@
       lineinfile:
         dest: /etc/default/buildmaster
         regexp: ^#?MASTER_BASEDIR\[{{ item }}\]=
-        line: 'MASTER_BASEDIR[{{ item }}]="/var/lib/buildbot/masters/{{ item }}"'
+        line: 'MASTER_BASEDIR[{{ item }}]="/srv/buildbot/masters/{{ item }}"'
         state: present
       with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
@@ -135,19 +167,19 @@
   sudo: True
   tasks:
 
-    - name: ensure that buildbot slave packages are installed
-      apt:
-        pkg: "{{ item }}"
-        state: latest
-        update_cache: yes
-        cache_valid_time: 600
-      with_items:
-        - buildbot-slave
-        - git
+    - name: update /etc/init.d/buildslave for each slave from template if necessary
+      template:
+        src: templates/etc/init.d/buildslave
+        dest: /etc/init.d/buildslave
+        owner: buildbot
+        group: buildbot
+        mode: 0600
+      notify:
+        - restart buildbot slave services
 
     - name: ensure that each buildslave process has a subdirectory
       file:
-        path: /var/lib/buildbot/slaves/{{ item }}
+        path: /srv/buildbot/slaves/{{ item }}
         owner: buildbot
         group: buildbot
         mode: 0700
@@ -164,8 +196,8 @@
                                 inventory_hostname_short + '-' + item + 
                                 ' length=20 chars=ascii_letters,digits') }}
       args:
-        chdir: /var/lib/buildbot
-        creates: /var/lib/buildbot/slaves/{{ item }}/buildbot.tac
+        chdir: /srv/buildbot
+        creates: /srv/buildbot/slaves/{{ item }}/buildbot.tac
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
     - name: ensure that buildslave is enabled in /etc/default/buildslave
@@ -196,7 +228,7 @@
       lineinfile:
         dest: /etc/default/buildslave
         regexp: ^#?SLAVE_BASEDIR\[{{ item }}\]=
-        line: 'SLAVE_BASEDIR[{{ item }}]="/var/lib/buildbot/slaves/{{ item }}"'
+        line: 'SLAVE_BASEDIR[{{ item }}]="/srv/buildbot/slaves/{{ item }}"'
         state: present
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
@@ -224,28 +256,12 @@
         state: started
       with_items:
         - buildslave
+  handlers:
 
-
-#- hosts: all
-#  sudo: True
-#  tasks:
-#
-#    - name: ensure that pip is installed
-#      apt:
-#        pkg: "{{ item }}"
-#        state: latest
-#        update_cache: yes
-#        cache_valid_time: 600
-#      with_items:
-#        - python-dev
-#        - python-pip
-#
-#    - name: ensure that buildbot is installed
-#      pip:
-#        name: "{{ item.name }}"
-#        state: latest
-#      when: inventory_hostname in groups['{{ item.group }}']
-#      with_items:
-#        - { name: buildbot, group: master }
-#        - { name: buildbot-slave, group: slaves }
-#
+    - name: restart buildbot slave services
+      service:
+        name: "{{ item }}"
+        state: restarted
+      with_items:
+        - buildslave
+ 
