@@ -1,1 +1,1 @@
-default host
+{{ ansible_distribution }} {{ ansible_distribution_version }} {{ ansible_architecture }}
