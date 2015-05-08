@@ -213,8 +213,8 @@
 
     - name: update admin for each master from template if necessary
       template:
-        src: templates/srv/buildbot/slaves/admin
-        dest: /srv/buildbot/admin/{{ item }}/admin
+        src: templates/srv/buildbot/slaves/info/admin
+        dest: /srv/buildbot/slaves/{{ item }}/info/admin
         owner: buildbot
         group: buildbot
         mode: 0644
@@ -224,8 +224,8 @@
 
     - name: update info for each master from template if necessary
       template:
-        src: templates/srv/buildbot/slaves/info
-        dest: /srv/buildbot/info/{{ item }}/info
+        src: templates/srv/buildbot/slaves/info/host
+        dest: /srv/buildbot/slaves/{{ item }}/info/host
         owner: buildbot
         group: buildbot
         mode: 0644
