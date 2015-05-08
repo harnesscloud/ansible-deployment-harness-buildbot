@@ -200,6 +200,28 @@
         creates: /srv/buildbot/slaves/{{ item }}/buildbot.tac
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
+    - name: update admin for each master from template if necessary
+      template:
+        src: templates/srv/buildbot/slaves/admin
+        dest: /srv/buildbot/admin/{{ item }}/admin
+        owner: buildbot
+        group: buildbot
+        mode: 0644
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot slave services
+
+    - name: update info for each master from template if necessary
+      template:
+        src: templates/srv/buildbot/slaves/info
+        dest: /srv/buildbot/info/{{ item }}/info
+        owner: buildbot
+        group: buildbot
+        mode: 0644
+      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      notify:
+        - restart buildbot slave services
+
     - name: ensure that buildslave is enabled in /etc/default/buildslave
       lineinfile:
         dest: /etc/default/buildslave
