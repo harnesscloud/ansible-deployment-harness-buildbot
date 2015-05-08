@@ -90,6 +90,10 @@
         regexp: ^#?MASTER_ENABLED\[{{ item }}\]=
         line: MASTER_ENABLED[{{ item }}]=1
         state: present
+        create: yes
+        owner: root
+        group: root
+        mode: 0644
       with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
         - restart buildbot master services
@@ -228,6 +232,10 @@
         regexp: ^#?SLAVE_ENABLED\[{{ item }}\]=
         line: SLAVE_ENABLED[{{ item }}]=1
         state: present
+        create: yes
+        owner: root
+        group: root
+        mode: 0644
       with_sequence: start=1 end={{ buildbot_slave_process_count }}
 
     - name: ensure that buildslave names are configured in /etc/default/buildslave
