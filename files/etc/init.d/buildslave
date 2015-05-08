@@ -16,7 +16,7 @@
 ### END INIT INFO
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-SLAVE_RUNNER=/usr/bin/buildslave
+SLAVE_RUNNER=/usr/local/bin/buildslave
 
 
 # Source buildslave configuration

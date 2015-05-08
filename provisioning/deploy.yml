@@ -50,9 +50,9 @@
       copy:
         src: files/etc/init.d/buildmaster
         dest: /etc/init.d/buildmaster
-        owner: buildbot
-        group: buildbot
-        mode: 0600
+        owner: root
+        group: root
+        mode: 0755
       notify:
         - restart buildbot master services
 
@@ -175,9 +175,9 @@
       copy:
         src: files/etc/init.d/buildslave
         dest: /etc/init.d/buildslave
-        owner: buildbot
-        group: buildbot
-        mode: 0600
+        owner: root
+        group: root
+        mode: 0755
       notify:
         - restart buildbot slave services
 
