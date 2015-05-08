@@ -46,9 +46,9 @@
   sudo: True
   tasks:
 
-    - name: update /etc/init.d/buildmaster for each master from template if necessary
-      template:
-        src: templates/etc/init.d/buildmaster
+    - name: update /etc/init.d/buildmaster for each master if necessary
+      copy:
+        src: files/etc/init.d/buildmaster
         dest: /etc/init.d/buildmaster
         owner: buildbot
         group: buildbot
@@ -167,9 +167,9 @@
   sudo: True
   tasks:
 
-    - name: update /etc/init.d/buildslave for each slave from template if necessary
-      template:
-        src: templates/etc/init.d/buildslave
+    - name: update /etc/init.d/buildslave for each slave if necessary
+      copy:
+        src: files/etc/init.d/buildslave
         dest: /etc/init.d/buildslave
         owner: buildbot
         group: buildbot
