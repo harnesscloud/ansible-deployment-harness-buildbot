@@ -61,7 +61,7 @@
         path: /srv/buildbot/masters/{{ item }}
         owner: buildbot
         group: buildbot
-        mode: 0700
+        mode: 0755
         state: directory
       with_sequence: start=1 end={{ buildbot_master_process_count }}
 
