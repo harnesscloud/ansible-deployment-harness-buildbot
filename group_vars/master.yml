@@ -1,0 +1,8 @@
+---
+buildbot_hostname: localhost
+buildbot_enable_ssl: false
+buildbot_require_ssl: false
+buildbot_http_port: 80
+buildbot_https_port: 443
+buildbot_ssl_cert_file: ''
+buildbot_ssl_key_file: ''
