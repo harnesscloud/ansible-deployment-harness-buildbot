@@ -6,7 +6,7 @@ upstream buildbot {
 
 server {
 
-  listen {{ buildbot_http_port }};
+  listen {{ buildbot_http_port }} default_server;
   server_name {{ buildbot_hostname }};
   server_tokens off;     
   root /home/git/buildbot/public;

@@ -176,12 +176,20 @@
       notify:
         - restart nginx
 
+   
     - name: ensure /etc/nginx/sites-enabled/buildbot exists and links to ../sites-available/buildbot
       file:
         path: /etc/nginx/sites-enabled/buildbot
         src: ../sites-available/buildbot
         force: yes
         state: link
+      notify:
+        - restart nginx
+   
+    - name: ensure /etc/nginx/sites-enabled/default has been removed
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
       notify:
         - restart nginx
 
