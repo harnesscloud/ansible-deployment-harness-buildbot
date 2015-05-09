@@ -19,7 +19,7 @@ buildbot_projects:
       repo: "git://github.com/harnesscloud/crs.git",
       branch: master }
 
-buildbot_admin_email: "Mark Stillwell <mark@stillwell.me>"
+buildbot_admin_email: "Mark Stillwell <m.stillwell@imperial.ac.uk>"
 buildbot_title: HARNESS
 buildbot_titleURL: "http://www.harness-project.eu"
 buildbot_buildbotURL: "http://localhost:8101/"
