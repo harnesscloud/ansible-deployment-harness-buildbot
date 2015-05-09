@@ -16,9 +16,6 @@ buildbot_projects:
     - { name: irm-nova,
         repo: "https://gitlab.harness-project.eu/Ragusa/irm-nova.git",
         branch: master }
-    - { name: irm-nova,
-        repo: "https://gitlab.harness-project.eu/Ragusa/irm-nova.git",
-        branch: master }
     - { name: conpaas,
         repo: "git@gitlab.harness-project.eu:gtato/conpaas.git",
         branch: master }
