@@ -1,7 +1,7 @@
 # BUILDBOT
 
 upstream buildbot {
-  server localhost:8010;
+  server unix:/srv/buildbot/masters/buildbot.socket;
 }
 
 server {
