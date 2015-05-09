@@ -1,12 +1,4 @@
 ---
-buildbot_run_dir: "{{ lookup('env', 'PWD') }}"
-buildbot_admin_password: >
-  {{ lookup('password', buildbot_run_dir +
-                        '/private/credentials/buildbot-admin-password
-                         length=20
-                         chars=ascii_letters,digits') }}
-
-
 buildbot_repository_prefix: "https://github.com/marklee77/"
 
 buildbot_master_ip: "{{ hostvars[groups.master[0]].ansible_default_ipv4.address }}"
@@ -14,13 +6,4 @@ buildbot_master_ip: "{{ hostvars[groups.master[0]].ansible_default_ipv4.address 
 buildbot_master_process_count: 1
 buildbot_slave_process_count: 2
 
-buildbot_projects:
-  - { name: crs,
-      repo: "git://github.com/harnesscloud/crs.git",
-      branch: master }
-
 buildbot_admin_email: "Mark Stillwell <m.stillwell@imperial.ac.uk>"
-buildbot_title: HARNESS
-buildbot_titleURL: "http://www.harness-project.eu"
-buildbot_buildbotURL: "http://localhost:8101/"
-buildbot_notify_fromaddr: "buildbot-noreply@harness-project.eu"

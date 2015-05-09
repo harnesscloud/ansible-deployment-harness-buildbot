@@ -1,4 +1,33 @@
 ---
+buildbot_run_dir: "{{ lookup('env', 'PWD') }}"
+buildbot_admin_password: >
+  {{ lookup('password', buildbot_run_dir +
+                        '/private/credentials/buildbot-admin-password
+                         length=20
+                         chars=ascii_letters,digits') }}
+
+buildbot_projects:
+    - { name: ansible-deployment-harness-buildbot,
+        repo: "https://gitlab.harness-project.eu/mark/ansible-deployment-harness-buildbot.git",
+        branch: master }
+    - { name: crs,
+        repo: "https://gitlab.harness-project.eu/gabe/crs.git",
+        branch: master }
+    - { name: irm-nova,
+        repo: "https://gitlab.harness-project.eu/Ragusa/irm-nova.git",
+        branch: master }
+    - { name: irm-nova,
+        repo: "https://gitlab.harness-project.eu/Ragusa/irm-nova.git",
+        branch: master }
+    - { name: conpaas,
+        repo: "git@gitlab.harness-project.eu:gtato/conpaas.git",
+        branch: master }
+
+buildbot_title: HARNESS
+buildbot_titleURL: "http://www.harness-project.eu"
+buildbot_buildbotURL: "http://localhost:8101/"
+buildbot_notify_fromaddr: "buildbot-noreply@harness-project.eu"
+
 buildbot_hostname: localhost
 buildbot_enable_ssl: false
 buildbot_require_ssl: false
