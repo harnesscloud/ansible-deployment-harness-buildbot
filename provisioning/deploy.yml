@@ -168,7 +168,7 @@
 
     - name: update /etc/nginx/sites-available/buildbot from template
       template:
-        src: etc/nginx/sites-available/buildbot
+        src: templates/etc/nginx/sites-available/buildbot
         dest: /etc/nginx/sites-available/buildbot
         owner: root
         group: root
@@ -213,7 +213,7 @@
       with_items:
         - buildmaster
 
-     - name: restart nginx
+    - name: restart nginx
       service:
         name: "{{ item }}"
         state: restarted
