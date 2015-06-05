@@ -164,14 +164,14 @@
       with_items:
         - buildmaster
 
-    - name: ensure that nginx packages are installed
-      apt:
-        pkg: "{{ item }}"
-        state: latest
-        update_cache: yes
-        cache_valid_time: 600
-      with_items:
-        - nginx
+    #- name: ensure that nginx packages are installed
+    #  apt:
+    #    pkg: "{{ item }}"
+    #    state: latest
+    #    update_cache: yes
+    #    cache_valid_time: 600
+    #  with_items:
+    #    - nginx
 
     #- name: update /etc/nginx/sites-available/buildbot from template
     #  template:
