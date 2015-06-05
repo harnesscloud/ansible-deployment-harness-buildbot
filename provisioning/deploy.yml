@@ -173,51 +173,51 @@
       with_items:
         - nginx
 
-    - name: update /etc/nginx/sites-available/buildbot from template
-      template:
-        src: templates/etc/nginx/sites-available/buildbot
-        dest: /etc/nginx/sites-available/buildbot
-        owner: root
-        group: root
-        mode: 0644
-      notify:
-        - restart nginx
+    #- name: update /etc/nginx/sites-available/buildbot from template
+    #  template:
+    #    src: templates/etc/nginx/sites-available/buildbot
+    #    dest: /etc/nginx/sites-available/buildbot
+    #    owner: root
+    #    group: root
+    #    mode: 0644
+    #  notify:
+    #    - restart nginx
 
    
-    - name: ensure /etc/nginx/sites-enabled/buildbot exists and links to ../sites-available/buildbot
-      file:
-        path: /etc/nginx/sites-enabled/buildbot
-        src: ../sites-available/buildbot
-        force: yes
-        state: link
-      notify:
-        - restart nginx
+    #- name: ensure /etc/nginx/sites-enabled/buildbot exists and links to ../sites-available/buildbot
+    #  file:
+    #    path: /etc/nginx/sites-enabled/buildbot
+    #    src: ../sites-available/buildbot
+    #    force: yes
+    #    state: link
+    #  notify:
+    #    - restart nginx
    
-    - name: ensure /etc/nginx/sites-enabled/default has been removed
-      file:
-        path: /etc/nginx/sites-enabled/default
-        state: absent
-      notify:
-        - restart nginx
+    #- name: ensure /etc/nginx/sites-enabled/default has been removed
+    #  file:
+    #    path: /etc/nginx/sites-enabled/default
+    #    state: absent
+    #  notify:
+    #    - restart nginx
 
-    - name: ensure that there is not a hostname collision with the nginx default host
-      lineinfile:
-        dest: /etc/nginx/sites-available/default
-        regexp: '^(\s+)(server_name {{ buildbot_hostname }};.*)$'
-        backrefs: yes
-        line: '\1#\2'
-        state: present
-      notify:
-        - restart nginx
+    #- name: ensure that there is not a hostname collision with the nginx default host
+    #  lineinfile:
+    #    dest: /etc/nginx/sites-available/default
+    #    regexp: '^(\s+)(server_name {{ buildbot_hostname }};.*)$'
+    #    backrefs: yes
+    #    line: '\1#\2'
+    #    state: present
+    #  notify:
+    #    - restart nginx
 
-    - name: ensure that nginx is started and enabled
-      service:
-        name: "{{ item }}"
-        pattern: twistd.run()
-        enabled: yes
-        state: started
-      with_items:
-        - nginx
+    #- name: ensure that nginx is started and enabled
+    #  service:
+    #    name: "{{ item }}"
+    #    pattern: twistd.run()
+    #    enabled: yes
+    #    state: started
+    #  with_items:
+    #    - nginx
 
   handlers:
 
