@@ -34,6 +34,13 @@
         createhome: yes
         state: present
 
+    - name: ensure that buildbot user is in the docker group
+      user:
+        name: buildbot
+        groups: docker
+        append: yes
+        state: present
+
 
 - hosts: master
   sudo: True
