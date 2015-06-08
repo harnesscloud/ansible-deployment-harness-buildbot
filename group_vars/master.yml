@@ -10,8 +10,17 @@ buildbot_projects:
     - { name: ansible-deployment-harness-buildbot,
         repo: "https://gitlab.harness-project.eu/mark/ansible-deployment-harness-buildbot.git",
         branch: master }
+    - { name: ansible-deployment-harness,
+        repo: "https://gitlab.harness-project.eu/mark/ansible-deployment-harness.git",
+        branch: master }
+     - { name: bqwm,
+        repo: "https://gitlab.harness-project.eu/mark/bqwm.git",
+        branch: master }
     - { name: crs,
         repo: "https://gitlab.harness-project.eu/gabe/crs.git",
+        branch: master }
+    - { name: irm-shepard,
+        repo: "https://gitlab.harness-project.eu/gabe/irm-shepard.git",
         branch: master }
     - { name: irm-nova,
         repo: "https://gitlab.harness-project.eu/Ragusa/irm-nova.git",
