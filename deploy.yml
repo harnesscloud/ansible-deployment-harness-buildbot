@@ -5,6 +5,12 @@
     - chrony
     - docker
 
+- hosts: vagrantslaves
+  sudo: True
+  roles:
+    - virtualbox
+    - vagrant
+
 
 - hosts: all
   sudo: True
