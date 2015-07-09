@@ -1,12 +1,10 @@
 ---
 - hosts: all
-  sudo: True
   roles:
     - chrony
     - docker
 
 - hosts: vagrantslaves
-  sudo: True
   roles:
     - virtualbox
     - vagrant
