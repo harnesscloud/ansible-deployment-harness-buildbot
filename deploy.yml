@@ -240,7 +240,7 @@
         - nginx
  
 
-- hosts: slaves
+- hosts: slaves:vagrantslaves
   sudo: True
   tasks:
 
