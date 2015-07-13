@@ -74,7 +74,8 @@
         group: buildbot
         mode: 0755
         state: directory
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
 
     - name: ensure that each buildmaster subdirectory has been initialized
       sudo_user: buildbot
@@ -82,7 +83,8 @@
       args:
         chdir: /srv/buildbot
         creates: /srv/buildbot/masters/{{ item }}/buildbot.tac
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
 
     - name: update master.cfg for each master from template if necessary
       template:
@@ -91,7 +93,8 @@
         owner: buildbot
         group: buildbot
         mode: 0600
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
         - restart buildbot master services
 
@@ -105,7 +108,8 @@
         owner: root
         group: root
         mode: 0644
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
         - restart buildbot master services
 
@@ -115,7 +119,8 @@
         regexp: ^#?MASTER_NAME\[{{ item }}\]=
         line: 'MASTER_NAME[{{ item }}]="buildmaster {{ inventory_hostname_short }} #{{ item }}"'
         state: present
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
         - restart buildbot master services
 
@@ -125,7 +130,8 @@
         regexp: ^#?MASTER_USER\[{{ item }}\]=
         line: 'MASTER_USER[{{ item }}]="buildbot"'
         state: present
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
         - restart buildbot master services
 
@@ -135,7 +141,8 @@
         regexp: ^#?MASTER_BASEDIR\[{{ item }}\]=
         line: 'MASTER_BASEDIR[{{ item }}]="/srv/buildbot/masters/{{ item }}"'
         state: present
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
         - restart buildbot master services
 
@@ -145,7 +152,8 @@
         regexp: ^#?MASTER_OPTIONS\[{{ item }}\]=
         line: 'MASTER_OPTIONS[{{ item }}]=""'
         state: present
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
         - restart buildbot master services
 
@@ -155,7 +163,8 @@
         regexp: ^#?MASTER_PREFIXCMD\[{{ item }}\]=
         line: 'MASTER_PREFIXCMD[{{ item }}]=""'
         state: present
-      with_sequence: start=1 end={{ buildbot_master_process_count }}
+      with_items: [ "1" ]
+      #with_sequence: start=1 end={{ buildbot_master_process_count }}
       notify:
         - restart buildbot master services
 
