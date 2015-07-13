@@ -7,15 +7,6 @@ buildbot_admin_password: >
                          chars=ascii_letters,digits') }}
 
 buildbot_projects:
-    - { name: ansible-deployment-harness,
-        repo: "https://gitlab.harness-project.eu/mark/ansible-deployment-harness.git",
-        branch: master }
-    - { name: ansible-deployment-harness-buildbot,
-        repo: "https://gitlab.harness-project.eu/mark/ansible-deployment-harness-buildbot.git",
-        branch: master }
-    - { name: bqwm,
-        repo: "https://gitlab.harness-project.eu/mark/bqwm.git",
-        branch: master }
     - { name: conpaas,
         repo: "https://gitlab.harness-project.eu/gtato/conpaas.git",
         branch: master }
@@ -36,6 +27,11 @@ buildbot_projects:
         branch: master }
     - { name: irm-xtreemfs,
         repo: "https://gitlab.harness-project.eu/chrkl/irm-xtreemfs.git",
+        branch: master }
+
+buildbot_deployment_projects:
+    - { name: ansible-deployment-harness,
+        repo: "https://gitlab.harness-project.eu/mark/ansible-deployment-harness.git",
         branch: master }
 
 buildbot_title: HARNESS
