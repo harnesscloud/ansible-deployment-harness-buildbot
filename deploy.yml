@@ -383,4 +383,12 @@
         state: restarted
       with_items:
         - buildslave
- 
+
+- hosts: vagrantslaves
+  tasks:
+    - name: ensure that ansible is installed
+      pip:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - ansible
