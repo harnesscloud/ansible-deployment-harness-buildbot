@@ -22,9 +22,9 @@ buildbot_projects:
     - { name: irm-shepard,
         repo: "https://gitlab.harness-project.eu/gabe/irm-shepard.git",
         branch: master }
-    - { name: irm-net,
-        repo: "https://gitlab.harness-project.eu/gioannidis/irm-net.git",
-        branch: master }
+    #- { name: irm-net,
+    #    repo: "https://gitlab.harness-project.eu/gioannidis/irm-net.git",
+    #    branch: master }
     - { name: irm-xtreemfs,
         repo: "https://gitlab.harness-project.eu/chrkl/irm-xtreemfs.git",
         branch: master }
