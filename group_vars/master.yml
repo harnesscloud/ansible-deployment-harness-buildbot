@@ -29,7 +29,7 @@ buildbot_projects:
         repo: "https://gitlab.harness-project.eu/chrkl/irm-xtreemfs.git",
         branch: master }
 
-buildbot_deployment_projects:
+buildbot_deploy_projects:
     - { name: ansible-deployment-harness,
         repo: "https://gitlab.harness-project.eu/mark/ansible-deployment-harness.git",
         branch: master }
