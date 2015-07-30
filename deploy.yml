@@ -392,3 +392,4 @@
         state: latest
       with_items:
         - ansible
+        - netaddr
